@@ -1,0 +1,65 @@
+services:
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build: .
+    ports:
+      - "8003:8000"
+    env_file: .env
+    environment:
+      REDIS_URL: redis://redis:6379
+      CHROMA_DIR: /app/chroma_db
+      UPLOAD_DIR: /app/uploads
+    depends_on:
+      redis:
+        condition: service_healthy
+    volumes:
+      - chroma_data:/app/chroma_db
+      - upload_data:/app/uploads
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+
+  worker:
+    build: .
+    command: celery -A worker.tasks worker -l info --concurrency=2
+    env_file: .env
+    environment:
+      REDIS_URL: redis://redis:6379
+      CHROMA_DIR: /app/chroma_db
+      UPLOAD_DIR: /app/uploads
+    depends_on:
+      redis:
+        condition: service_healthy
+    volumes:
+      - chroma_data:/app/chroma_db
+      - upload_data:/app/uploads
+
+  streamlit:
+    build: .
+    command: streamlit run streamlit_app.py --server.port 8501 --server.address 0.0.0.0
+    ports:
+      - "8501:8501"
+    env_file: .env
+    environment:
+      API_URL: http://api:8000
+    depends_on:
+      api:
+        condition: service_healthy
+
+volumes:
+  redis_data:
+  chroma_data:
+  upload_data:
