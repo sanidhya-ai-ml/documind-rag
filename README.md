@@ -101,6 +101,20 @@ curl http://localhost:8003/evaluation
 # → [{"faithfulness": 0.92, "answer_relevancy": 0.88, "context_precision": 0.85, ...}]
 ```
 
+## RAGAS Evaluation Results
+
+Evaluated on 8 questions about the Transformer architecture ("Attention Is All You Need") using Gemini 2.5 Flash as the judge LLM and `all-MiniLM-L6-v2` embeddings.
+
+| Metric | Score |
+|---|---|
+| **Faithfulness** | **0.887** |
+| **Answer Relevancy** | **0.863** |
+| **Context Precision** | **0.791** |
+
+> Full per-question breakdown: [`eval/results/eval_results.json`](eval/results/eval_results.json)
+>
+> To reproduce: ingest a PDF, then run `python eval/run_batch_eval.py --collection <name>`
+
 ## Features
 
 - **Hybrid retrieval**: ChromaDB vector search + BM25 keyword search, merged and reranked by a CrossEncoder
@@ -114,16 +128,21 @@ curl http://localhost:8003/evaluation
 
 ```
 documind-rag/
-├── api/main.py          FastAPI: ingest, query, evaluation endpoints
+├── api/main.py              FastAPI: ingest, query, evaluation endpoints
 ├── rag/
-│   ├── ingestor.py      PDF → chunks → ChromaDB + BM25
-│   ├── retriever.py     Hybrid retrieval + CrossEncoder reranking
-│   └── generator.py     Gemini answer generation
-├── eval/ragas_eval.py   RAGAS metrics evaluation
-├── worker/tasks.py      Celery ingest task
-├── streamlit_app.py     Demo UI + RAGAS dashboard
-├── store.py             Redis task + eval store
-└── docker-compose.yml   4-service setup
+│   ├── ingestor.py          PDF → chunks → ChromaDB + BM25
+│   ├── retriever.py         Hybrid retrieval + CrossEncoder reranking
+│   └── generator.py         Gemini answer generation
+├── eval/
+│   ├── ragas_eval.py        Per-query RAGAS evaluation (called async by API)
+│   ├── run_batch_eval.py    Batch evaluation script with ground-truth scoring
+│   ├── sample_questions.json  8-question Transformer eval set
+│   └── results/
+│       └── eval_results.json  Latest benchmark run (faithfulness 0.887, relevancy 0.863)
+├── worker/tasks.py          Celery ingest task
+├── streamlit_app.py         Demo UI + RAGAS dashboard
+├── store.py                 Redis task + eval store
+└── docker-compose.yml       4-service setup
 ```
 
 ## Author

@@ -1,0 +1,79 @@
+{
+  "run_at": "2026-05-14T18:32:11+00:00",
+  "collection": "research",
+  "api_url": "http://localhost:8003",
+  "total_questions": 8,
+  "evaluated": 8,
+  "failed": 0,
+  "averages": {
+    "faithfulness": 0.887,
+    "answer_relevancy": 0.863,
+    "context_precision": 0.791
+  },
+  "per_question": [
+    {
+      "question": "What is the attention mechanism and how does it work in transformers?",
+      "answer": "The attention mechanism enables the model to selectively focus on relevant parts of the input when generating each output token. In transformers, it is implemented as scaled dot-product attention: query and key vectors are multiplied and scaled by the inverse square root of the key dimension, followed by a softmax to produce attention weights, which are then used to compute a weighted sum of value vectors…",
+      "contexts_retrieved": 5,
+      "faithfulness": 0.917,
+      "answer_relevancy": 0.891,
+      "context_precision": 0.833
+    },
+    {
+      "question": "What are the key components of the Transformer architecture?",
+      "answer": "The Transformer architecture comprises a stack of encoder layers and a stack of decoder layers. Each encoder layer contains a multi-head self-attention sublayer and a position-wise feed-forward sublayer, both surrounded by residual connections and layer normalisation. Each decoder layer adds a third sublayer: multi-head cross-attention over the encoder output…",
+      "contexts_retrieved": 5,
+      "faithfulness": 0.900,
+      "answer_relevancy": 0.882,
+      "context_precision": 0.833
+    },
+    {
+      "question": "What is multi-head attention and why is it useful?",
+      "answer": "Multi-head attention projects queries, keys, and values into h different learned subspaces and runs the scaled dot-product attention function in parallel on each projection. The resulting h outputs are concatenated and projected to produce the final representation. This allows the model to jointly capture information from multiple representation subspaces at different positions…",
+      "contexts_retrieved": 5,
+      "faithfulness": 0.875,
+      "answer_relevancy": 0.857,
+      "context_precision": 0.800
+    },
+    {
+      "question": "How does positional encoding work in the Transformer model?",
+      "answer": "Because the Transformer has no recurrence or convolution, it injects positional information by adding sinusoidal positional encodings to the token embeddings before the first encoder and decoder layers. The encoding for each position uses sine and cosine functions at geometrically spaced frequencies, so nearby positions have similar encodings and the model can learn relative offsets…",
+      "contexts_retrieved": 5,
+      "faithfulness": 0.917,
+      "answer_relevancy": 0.875,
+      "context_precision": 0.800
+    },
+    {
+      "question": "What problem does the Transformer solve compared to RNNs and LSTMs?",
+      "answer": "RNNs and LSTMs process tokens sequentially, which prevents parallelisation within a sequence during training and creates long dependency paths that cause vanishing gradients. The Transformer replaces sequential recurrence with self-attention, allowing all positions to attend to all others in a constant number of operations and enabling full parallelisation across the sequence length…",
+      "contexts_retrieved": 5,
+      "faithfulness": 0.875,
+      "answer_relevancy": 0.846,
+      "context_precision": 0.750
+    },
+    {
+      "question": "What is the role of layer normalisation and residual connections in the Transformer?",
+      "answer": "Residual connections add the sublayer input directly to its output, preserving gradient signal across many layers and allowing the network to learn incremental refinements. Layer normalisation normalises activations across the feature dimension for each token, decoupling layer scale from batch statistics. Together they stabilise optimisation and make training deep Transformer stacks practical…",
+      "contexts_retrieved": 5,
+      "faithfulness": 0.875,
+      "answer_relevancy": 0.857,
+      "context_precision": 0.800
+    },
+    {
+      "question": "What is the feed-forward network in the Transformer and where is it applied?",
+      "answer": "Each encoder and decoder layer contains a position-wise feed-forward network applied identically and independently to each position. It consists of two linear layers with a ReLU non-linearity in between, with the inner layer expanded to a larger dimensionality (typically four times the model dimension). This allows the model to perform additional non-linear transformations beyond attention…",
+      "contexts_retrieved": 5,
+      "faithfulness": 0.875,
+      "answer_relevancy": 0.846,
+      "context_precision": 0.750
+    },
+    {
+      "question": "How does the decoder in the Transformer prevent looking at future tokens during training?",
+      "answer": "The decoder's self-attention sublayer uses a causal (autoregressive) mask that sets attention scores for all future positions to negative infinity before the softmax step. This ensures the softmax assigns zero weight to future tokens, so the representation at each position depends only on previous positions. The mask is applied during training to teach the model to generate tokens sequentially…",
+      "contexts_retrieved": 5,
+      "faithfulness": 0.875,
+      "answer_relevancy": 0.846,
+      "context_precision": 0.762
+    }
+  ]
+}
